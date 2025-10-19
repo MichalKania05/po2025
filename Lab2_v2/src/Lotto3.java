@@ -35,15 +35,9 @@ public class Lotto3
         };
         long czas_k = System.currentTimeMillis();
 
-        // Sortowanie losów użytkownika i komputera
-        ArrayList<Integer> wlasne_typy_sort = new ArrayList<>(wlasne_typy);
-        Collections.sort(wlasne_typy_sort);
-        ArrayList<Integer> losy_komputera_sort = new ArrayList<>(losy_komputera);
-        Collections.sort(losy_komputera_sort);
-
         // Wynik
-        System.out.println("Liczby użytkownika: " + wlasne_typy_sort);
-        System.out.println("Wylosowane liczby: " + losy_komputera_sort);
+        System.out.println("Liczby użytkownika: " + wlasne_typy);
+        System.out.println("Wylosowane liczby: " + losy_komputera);
         System.out.println("Liczba losowań: " + ilosc_losowan);
         System.out.println("Czas losowań: " + (czas_k - czas_p));
     }
