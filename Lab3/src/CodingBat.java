@@ -13,8 +13,8 @@ public class CodingBat
     // Zadanie startHi
     public static boolean startHi(String str)
     {
+        if (str.length() < 2) {return false;}
         String poczatek = str.substring(0, 2); // Pierwsze dwie litery
-
         if (poczatek.equals("hi")) {return true;}
         else {return false;}
     }
@@ -40,7 +40,6 @@ public class CodingBat
                 ilosc++;
             }
         }
-
         return ilosc;
     }
 }
