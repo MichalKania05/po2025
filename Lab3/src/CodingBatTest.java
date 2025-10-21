@@ -2,6 +2,8 @@ import static org.junit.Assert.*;
 
 public class CodingBatTest
 {
+
+    // Test diff21()
     @org.junit.Test
     public void diff21()
     {
@@ -20,6 +22,7 @@ public class CodingBatTest
     }
 
 
+    // Test startHi()
     @org.junit.Test
     public void startHi()
     {
@@ -34,6 +37,7 @@ public class CodingBatTest
     }
 
 
+    // Test firstHalf()
     @org.junit.Test
     public void firstHalf()
     {
@@ -46,6 +50,8 @@ public class CodingBatTest
         assertEquals("kit", new CodingBat().firstHalf("kitten"));
     }
 
+
+    // Test countEvens()
     @org.junit.Test
     public void countEvens()
     {
@@ -66,4 +72,5 @@ public class CodingBatTest
         assertEquals(1, new CodingBat().countEvens(cE7));
         assertEquals(2, new CodingBat().countEvens(cE8));
     }
+
 }

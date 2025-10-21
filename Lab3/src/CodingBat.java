@@ -2,7 +2,7 @@
 public class CodingBat
 {
 
-    // Zadanie diff21
+    // Zadanie diff21()
     public static int diff21(int n)
     {
         if (n<=21) {return (21-n);} // Zwykła wartość bezwzględna
@@ -10,7 +10,7 @@ public class CodingBat
     }
 
 
-    // Zadanie startHi
+    // Zadanie startHi()
     public static boolean startHi(String str)
     {
         if (str.length() < 2) {return false;}
@@ -20,7 +20,7 @@ public class CodingBat
     }
 
 
-    // Zadanie firstHalf
+    // Zadanie firstHalf()
     public static String firstHalf(String str)
     {
         int dlugosc = str.length();
@@ -29,7 +29,7 @@ public class CodingBat
     }
 
 
-    // Zadanie countEvens
+    // Zadanie countEvens()
     public static int countEvens(int[] nums)
     {
         int ilosc = 0;
@@ -42,4 +42,5 @@ public class CodingBat
         }
         return ilosc;
     }
+
 }
