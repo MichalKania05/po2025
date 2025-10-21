@@ -19,6 +19,7 @@ public class CodingBatTest
         assertEquals(58, new CodingBat().diff21(50));
     }
 
+
     @org.junit.Test
     public void startHi()
     {
@@ -32,11 +33,22 @@ public class CodingBatTest
         assertEquals(true, new CodingBat().startHi("hi ho"));
     }
 
-    //@org.junit.Test
-    //public void firstHalf() {
-    //}
 
-    //@org.junit.Test
-    //public void countEvens() {
-    //}
+    @org.junit.Test
+    public void firstHalf()
+    {
+        assertEquals("Woo", new CodingBat().firstHalf("WooHoo"));
+        assertEquals("Hello", new CodingBat().firstHalf("HelloThere"));
+        assertEquals("abc", new CodingBat().firstHalf("abcdef"));
+        assertEquals("a", new CodingBat().firstHalf("ab"));
+        assertEquals("", new CodingBat().firstHalf(""));
+        assertEquals("01234", new CodingBat().firstHalf("0123456789"));
+        assertEquals("kit", new CodingBat().firstHalf("kitten"));
+    }
+
+    /*@org.junit.Test
+    public void countEvens()
+    {
+        assertEquals(3, new CodingBat().);
+    }*/
 }
