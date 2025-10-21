@@ -19,10 +19,18 @@ public class CodingBatTest
         assertEquals(58, new CodingBat().diff21(50));
     }
 
-    //@org.junit.Test
-    //public void startHi()
-    //{
-    //}
+    @org.junit.Test
+    public void startHi()
+    {
+        assertEquals(true, new CodingBat().startHi("hi there"));
+        assertEquals(true, new CodingBat().startHi("hi"));
+        assertEquals(false, new CodingBat().startHi("hello hi"));
+        assertEquals(false, new CodingBat().startHi("he"));
+        assertEquals(false, new CodingBat().startHi("h"));
+        assertEquals(false, new CodingBat().startHi(""));
+        assertEquals(false, new CodingBat().startHi("ho hi"));
+        assertEquals(true, new CodingBat().startHi("hi ho"));
+    }
 
     //@org.junit.Test
     //public void firstHalf() {
