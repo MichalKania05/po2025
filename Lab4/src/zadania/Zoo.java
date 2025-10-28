@@ -12,4 +12,12 @@ public class Zoo
             System.out.println(animals[i].toString());
         }
     }
+
+    public static int ileNog(Animal[] animals) {
+        int ilosc = 0;
+        for (Animal animal : animals) {
+            ilosc += animal.legs;
+        }
+        return ilosc;
+    }
 }

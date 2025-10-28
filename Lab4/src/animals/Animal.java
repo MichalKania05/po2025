@@ -6,8 +6,6 @@ public abstract class Animal
     public String name;
     public int legs;
 
-    //public abstract String getDescription();
-
     public static Animal getRandomAnimal()
     {
         Random losowe = new Random();
