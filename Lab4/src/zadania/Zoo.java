@@ -13,8 +13,8 @@ public class Zoo
             System.out.println("Zwierzę " + (i + 1) + ": " + animals[i].getDescription());
         }
 
-        int nogi = ileNog(animals);
-        System.out.println("\nŁączna liczba nóg: " + nogi);
+        int nogi_suma = ileNog(animals);
+        System.out.println("\nŁączna liczba nóg: " + nogi_suma);
     }
 
     public static int ileNog(Animal[] animals)
