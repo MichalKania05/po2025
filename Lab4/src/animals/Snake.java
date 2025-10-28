@@ -7,4 +7,10 @@ public class Snake extends Animal
         legs = 0;
         name = "Snake";
     }
+
+    @Override
+    public String getDescription()
+    {
+        return "Snake, ilość nóg: " + legs;
+    }
 }

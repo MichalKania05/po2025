@@ -6,18 +6,18 @@ public abstract class Animal
     public String name;
     public int legs;
 
+    public abstract String getDescription();
+
     public static Animal getRandomAnimal()
     {
         Random losowe = new Random();
         int index = losowe.nextInt(3);
-        switch(index)
+        switch (index)
         {
             case 0:
                 return new Dog();
-
             case 1:
                 return new Parrot();
-
             default:
                 return new Snake();
         }

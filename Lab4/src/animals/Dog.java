@@ -7,4 +7,11 @@ public class Dog extends Animal
         legs = 4;
         name = "Dog";
     }
+
+    @Override
+    public String getDescription()
+    {
+        return "Dog, ilość nóg: " + legs;
+    }
 }
+

@@ -7,4 +7,10 @@ public class Parrot extends Animal
         legs = 2;
         name = "Parrot";
     }
+
+    @Override
+    public String getDescription()
+    {
+        return "Parrot, ilość nóg: " + legs;
+    }
 }
