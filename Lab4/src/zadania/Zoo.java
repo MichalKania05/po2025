@@ -1,5 +1,5 @@
 package zadania;
-import animals.Animal;
+import animals.*;
 
 public class Zoo
 {
@@ -10,7 +10,9 @@ public class Zoo
         for (int i = 0; i < animals.length; i++)
         {
             animals[i] = Animal.getRandomAnimal();
-            System.out.println("Zwierzę " + (i + 1) + ": " + animals[i].getDescription());
+            System.out.println("\n[!] Zwierzę nr " + (i + 1) + " [!]");
+            System.out.println(animals[i].getDescription());
+            animals[i].makeSound();
         }
 
         int nogi_suma = ileNog(animals);

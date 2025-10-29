@@ -11,6 +11,11 @@ public class Parrot extends Animal
     @Override
     public String getDescription()
     {
-        return "Parrot, ilość nóg: " + legs;
+        return "Papuga, ilość nóg: " + legs;
+    }
+
+    @Override
+    public void makeSound() {
+        System.out.println("Ćwir ćwir!");
     }
 }

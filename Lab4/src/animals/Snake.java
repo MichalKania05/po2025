@@ -11,6 +11,11 @@ public class Snake extends Animal
     @Override
     public String getDescription()
     {
-        return "Snake, ilość nóg: " + legs;
+        return "Wąż, ilość nóg: " + legs;
+    }
+
+    @Override
+    public void makeSound() {
+        System.out.println("SSSSSSSSSS...");
     }
 }

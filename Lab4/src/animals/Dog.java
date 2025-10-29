@@ -11,7 +11,12 @@ public class Dog extends Animal
     @Override
     public String getDescription()
     {
-        return "Dog, ilość nóg: " + legs;
+        return "Pies, ilość nóg: " + legs;
+    }
+
+    @Override
+    public void makeSound() {
+        System.out.println("Hau hau!");
     }
 }
 

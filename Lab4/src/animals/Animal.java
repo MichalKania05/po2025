@@ -8,6 +8,8 @@ public abstract class Animal
 
     public abstract String getDescription();
 
+    public abstract void makeSound();
+
     public static Animal getRandomAnimal()
     {
         Random losowe = new Random();
@@ -21,5 +23,10 @@ public abstract class Animal
             default:
                 return new Snake();
         }
+    }
+
+    public int getLegs()
+    {
+        return legs;
     }
 }
