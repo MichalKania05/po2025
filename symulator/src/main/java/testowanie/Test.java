@@ -17,7 +17,19 @@ public class Test
         Samochod sam1 = new Samochod("XYZ-1234", "Golf 5",
                 250, sil1, sb1);
 
-        System.out.println(sam1.getWaga()); // Zobaczyć czy zadziała jak się dorobi komponenty
 
+        // Testowanie
+        sam1.wlacz();
+        spr1.wcisnij();
+        sb1.zwiekszBieg();
+        sb1.zwiekszBieg();
+        sb1.zwiekszBieg();
+        sb1.zwiekszBieg();
+        System.out.println(sb1.getAktBieg());
+        sb1.zmniejszBieg();
+        sb1.zmniejszBieg();
+        System.out.println(sb1.getAktBieg());
+        spr1.zwolnij();
+        sam1.wylacz();
     }
 }

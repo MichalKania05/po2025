@@ -16,7 +16,7 @@ public class SkrzyniaBiegow extends Komponent
     {
         super(producent, model, nazwa, waga, cena); // Komponent
         this.iloscBiegow = iloscBiegow;
-        this.aktBieg = 0;
+        this.aktBieg = getAktBieg();
         this.aktPrzelozenie = 0.0;
         this.sprzeglo = sprzeglo;
     }
