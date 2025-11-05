@@ -22,29 +22,40 @@ public class Silnik extends Komponent
     {
         if (obroty == 0)
         {obroty = 1000;}
+
+        System.out.println("Uruchomiono silnik!");
     }
 
     public void zatrzymaj()
     {
         obroty = 0;
+        System.out.println("Zatrzymano silnik!");
     }
 
     public void zwiekszObroty()
     {
-        if ((obroty > 0) && (obroty + 100 <= maxObroty))
-        {obroty += 100;}
+        if (obroty > 0)
+        {
+            obroty += 100;
 
-        else if (obroty + 100 > maxObroty)
-        {obroty = maxObroty;}
+            if (obroty > maxObroty)
+            {obroty = maxObroty;}
+
+            System.out.println("Zwiększono obroty: " + getObroty());
+        }
     }
 
     public void zmniejszObroty()
     {
-        if (obroty > 800)
-        {obroty -= 100;}
+        if (obroty > 0)
+        {
+            obroty -= 100;
 
-        else if ((obroty > 0) && (obroty <= 800))
-        {obroty = 1000;}
+            if (obroty < 0)
+            {obroty = 0;}
+
+            System.out.println("Zmniejszono obroty: " + getObroty());
+        }
     }
 
 

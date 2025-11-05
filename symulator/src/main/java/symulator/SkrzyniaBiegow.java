@@ -28,11 +28,17 @@ public class SkrzyniaBiegow extends Komponent
         if (sprzeglo.stanSprzegla() && (aktBieg < iloscBiegow))
         {
             aktBieg++;
+            System.out.println("Zwiększono bieg: " + getAktBieg());
 
             if (aktBieg == 0)
                 {aktPrzelozenie = 0.0;}
             else
                 {aktPrzelozenie = 3.8 / pow(aktBieg, 0.85);}
+        }
+
+        else
+        {
+            System.out.println("Nie można zwiększyć biegu!");
         }
     }
 
@@ -41,11 +47,17 @@ public class SkrzyniaBiegow extends Komponent
         if (sprzeglo.stanSprzegla() && (aktBieg > 0))
         {
             aktBieg--;
+            System.out.println("Zmniejszono bieg: " + getAktBieg());
 
             if (aktBieg == 0)
                 {aktPrzelozenie = 0.0;}
             else
             {aktPrzelozenie = 3.8 / pow(aktBieg, 0.85);}
+        }
+
+        else
+        {
+            System.out.println("Nie można zmniejszyć biegu!");
         }
     }
 
@@ -71,9 +83,8 @@ public class SkrzyniaBiegow extends Komponent
         return sprzeglo;
     }
 
-    /*
     public void setSprzeglo(Sprzeglo sprzeglo)
     {
         this.sprzeglo = sprzeglo;
-    }*/
+    }
 }

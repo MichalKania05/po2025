@@ -24,11 +24,10 @@ public class Test
         sb1.zwiekszBieg();
         sb1.zwiekszBieg();
         sb1.zwiekszBieg();
-        sb1.zwiekszBieg();
-        System.out.println(sb1.getAktBieg());
         sb1.zmniejszBieg();
         sb1.zmniejszBieg();
-        System.out.println(sb1.getAktBieg());
+        sb1.zmniejszBieg();
+        sb1.zmniejszBieg();
         spr1.zwolnij();
         sam1.wylacz();
     }

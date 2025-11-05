@@ -18,11 +18,13 @@ public class Sprzeglo extends Komponent
     public void wcisnij()
     {
         stanSprzegla = true;
+        System.out.println("Wciśnięto sprzęgło!");
     }
 
     public void zwolnij()
     {
         stanSprzegla = false;
+        System.out.println("Zwolniono sprzęgło!");
     }
 
     public boolean stanSprzegla()
