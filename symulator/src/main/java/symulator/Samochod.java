@@ -1,4 +1,5 @@
 package symulator;
+import static java.lang.Math.*;
 
 public class Samochod extends Pozycja
 {
@@ -63,9 +64,12 @@ public class Samochod extends Pozycja
 
     public void jedzDo(Pozycja cel)
     {
-        double deltaX = cel.get_x() - this.get_x();
-        double deltaY = cel.get_y() - this.get_y();
-        aktPozycje(deltaX, deltaY);
+        if(stanWlaczenia)
+        {
+            double deltaX = cel.get_x() - this.get_x();
+            double deltaY = cel.get_y() - this.get_y();
+            aktPozycje(deltaX, deltaY);
+        }
     }
 
     public double getWaga()
@@ -115,8 +119,7 @@ public class Samochod extends Pozycja
 
 
     // Testowanie klasy
-        public static void main(String[] args)
-        {
+        public static void main(String[] args) {
             Sprzeglo spr1 = new Sprzeglo("idk", "SP1",
                     "Sprzeglo1", 0.005, 250);
 
@@ -159,8 +162,20 @@ public class Samochod extends Pozycja
 
             // Sprawdzenie nowej metody
             Pozycja cel3 = new Pozycja(7, 18);
-            sam1.przemiesc(cel3, 2, 0.2);
-            System.out.println("\n");
+            System.out.println(sam1.getAktPozycja());
+            while (sam1.get_x() != cel3.get_x() || sam1.get_y() != cel3.get_y())
+            {
+                sam1.przemiesc(cel3, 2, 0.2);
+                System.out.println(sam1.getAktPozycja());
+            }
+
+            Pozycja poczatek = new Pozycja(0, 0);
+            System.out.println(sam1.getAktPozycja());
+            while (sam1.get_x() != cel3.get_x() || sam1.get_y() != cel3.get_y())
+            {
+                sam1.przemiesc(poczatek, 4, 0.5);
+                System.out.println(sam1.getAktPozycja());
+            }
 
             spr1.zwolnij();
             sam1.wylacz();
