@@ -171,7 +171,7 @@ public class Samochod extends Pozycja
 
             Pozycja poczatek = new Pozycja(0, 0);
             System.out.println(sam1.getAktPozycja());
-            while (sam1.get_x() != cel3.get_x() || sam1.get_y() != cel3.get_y())
+            while (sam1.get_x() != poczatek.get_x() || sam1.get_y() != poczatek.get_y())
             {
                 sam1.przemiesc(poczatek, 4, 0.5);
                 System.out.println(sam1.getAktPozycja());
