@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17.0.12"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="po.samochodgui.HelloController">
+
+    <!-- ======== TOP: Menu i pasek narzędzi ======== -->
+    <top>
+        <VBox spacing="5">
+            <!-- Pasek menu -->
+            <MenuBar>
+                <Menu text="File">
+                    <MenuItem text="New"/>
+                    <MenuItem text="Open"/>
+                    <MenuItem text="Exit"/>
+                </Menu>
+                <Menu text="Edit">
+                    <MenuItem text="Undo"/>
+                    <MenuItem text="Redo"/>
+                </Menu>
+            </MenuBar>
+
+            <!-- Pasek narzędzi -->
+            <ToolBar padding="5">
+                <ComboBox fx:id="comboBox" promptText="Wybierz samochód" prefWidth="150"/>
+                <Button text="Dodaj nowy" onAction="#onAddCar"/>
+                <Button text="Usuń" onAction="#onRemoveCar"/>
+            </ToolBar>
+        </VBox>
+    </top>
+
+    <!-- ======== LEFT: Panel z kontrolkami samochodu ======== -->
+    <left>
+        <ScrollPane fitToWidth="true" prefWidth="250">
+            <VBox spacing="10" padding="10">
+
+                <!-- Podstawowe dane samochodu -->
+                <TitledPane text="Podstawowe dane" expanded="true">
+                    <GridPane hgap="5" vgap="5" padding="5">
+                        <Label text="Model:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                        <TextField fx:id="modelField" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+                        <Label text="Nr rejestracyjny:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                        <TextField fx:id="registrationField" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+                        <Label text="Waga (kg):" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                        <TextField fx:id="weightField" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+                        <Label text="Prędkość (km/h):" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+                        <TextField fx:id="speedField" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+
+                        <Button text="Włącz" onAction="#onStartCar" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+                        <Button text="Wyłącz" onAction="#onStopCar" GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+                    </GridPane>
+                </TitledPane>
+
+                <!-- Silnik -->
+                <TitledPane text="Silnik" expanded="false">
+                    <VBox spacing="5" padding="5">
+                        <Label text="Rodzaj silnika:"/>
+                        <TextField fx:id="engineTypeField"/>
+                        <Label text="Moc (KM):"/>
+                        <TextField fx:id="enginePowerField"/>
+                        <Button text="Włącz silnik" onAction="#onStartEngine"/>
+                        <Button text="Wyłącz silnik" onAction="#onStopEngine"/>
+                    </VBox>
+                </TitledPane>
+
+                <!-- Skrzynia biegów -->
+                <TitledPane text="Skrzynia biegów" expanded="false">
+                    <VBox spacing="5" padding="5">
+                        <Label text="Typ skrzyni:"/>
+                        <TextField fx:id="gearboxTypeField"/>
+                        <Label text="Biegi:"/>
+                        <TextField fx:id="gearCountField"/>
+                        <Button text="Włącz" onAction="#onEngageGearbox"/>
+                        <Button text="Wyłącz" onAction="#onDisengageGearbox"/>
+                    </VBox>
+                </TitledPane>
+
+                <!-- Sprzęgło -->
+                <TitledPane text="Sprzęgło" expanded="false">
+                    <VBox spacing="5">
+                        <Label text="Typ sprzęgła:"/>
+                        <TextField fx:id="clutchTypeField"/>
+                        <Button text="Włącz" onAction="#onEngageClutch"/>
+                        <Button text="Wyłącz" onAction="#onDisengageClutch"/>
+                    </VBox>
+                </TitledPane>
+
+            </VBox>
+        </ScrollPane>
+    </left>
+
+    <!-- ======== CENTER: Obrazek samochodu ======== -->
+    <center>
+        <ImageView fx:id="imageView" fitWidth="400" fitHeight="300" preserveRatio="true"/>
+    </center>
+
+</BorderPane>
