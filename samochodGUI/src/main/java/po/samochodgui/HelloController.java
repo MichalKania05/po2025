@@ -1,3 +1,4 @@
+/*
 package po.samochodgui;
 
 import javafx.event.ActionEvent;
@@ -114,3 +115,40 @@ public class HelloController {
     }
 
 }
+*/
+
+package po.samochodgui;
+
+import javafx.fxml.FXML;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+
+public class HelloController {
+
+    @FXML
+    private ComboBox<String> carComboBox;
+
+    @FXML private TextField modelField, regField, weightField, speedField;
+    @FXML private Button onBtn, offBtn, otherBtn;
+
+    @FXML private TextField gbNameField, gbPriceField, gbWeightField, gbGearField;
+    @FXML private Button gearUpBtn, gearDownBtn;
+
+    @FXML private TextField engNameField, engPriceField, engWeightField, engRPMField;
+    @FXML private Button gasBtn, noGasBtn;
+
+    @FXML private TextField clNameField, clPriceField, clWeightField, clStateField;
+    @FXML private Button pressBtn, releaseBtn;
+
+    @FXML
+    private ImageView carImageView;
+
+    @FXML
+    public void initialize()
+    {
+        Image samIkona = new Image(getClass().getResourceAsStream("/samochod.png"));
+        carImageView.setImage(samIkona);
+    }
+}
+
