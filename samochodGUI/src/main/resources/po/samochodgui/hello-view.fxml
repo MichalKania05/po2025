@@ -5,7 +5,8 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 
-<BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="po.samochodgui.HelloController">
+<BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="po.samochodgui.HelloController">
 
     <top>
         <VBox>
@@ -36,19 +37,16 @@
                     <GridPane hgap="10" vgap="5">
                         <Label text="Model" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
                         <TextField fx:id="modelField" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
-
                         <Label text="Nr rejestracyjny" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
                         <TextField fx:id="regField" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
-
                         <Label text="Waga" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
                         <TextField fx:id="weightField" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
-
                         <Label text="Prędkość" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
                         <TextField fx:id="speedField" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
 
                         <HBox spacing="10" GridPane.rowIndex="4" GridPane.columnIndex="1">
-                            <Button text="Włącz" fx:id="onBtn"/>
-                            <Button text="Wyłącz" fx:id="offBtn"/>
+                            <Button text="Włącz" fx:id="onBtn" onAction="#onOnButton"/>
+                            <Button text="Wyłącz" fx:id="offBtn" onAction="#onOffButton"/>
                             <Button text="Button" fx:id="otherBtn"/>
                         </HBox>
                     </GridPane>
@@ -61,19 +59,16 @@
                     <GridPane hgap="10" vgap="5">
                         <Label text="Nazwa" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
                         <TextField fx:id="gbNameField" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
-
                         <Label text="Cena" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
                         <TextField fx:id="gbPriceField" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
-
                         <Label text="Waga" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
                         <TextField fx:id="gbWeightField" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
-
                         <Label text="Bieg" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
                         <TextField fx:id="gbGearField" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
 
                         <HBox spacing="10" GridPane.rowIndex="4" GridPane.columnIndex="1">
-                            <Button text="Zwiększ bieg" fx:id="gearUpBtn"/>
-                            <Button text="Zmniejsz bieg" fx:id="gearDownBtn"/>
+                            <Button text="Zwiększ bieg" fx:id="GearUpBtn" onAction="#onGearUpBtn"/>
+                            <Button text="Zmniejsz bieg" fx:id="GearDownBtn" onAction="#onGearDownBtn"/>
                         </HBox>
                     </GridPane>
                 </content>
@@ -85,13 +80,10 @@
                     <GridPane hgap="10" vgap="5">
                         <Label text="Nazwa" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
                         <TextField fx:id="engNameField" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
-
                         <Label text="Cena" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
                         <TextField fx:id="engPriceField" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
-
                         <Label text="Waga" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
                         <TextField fx:id="engWeightField" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
-
                         <Label text="Obroty" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
                         <TextField fx:id="engRPMField" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
 
@@ -109,19 +101,16 @@
                     <GridPane hgap="10" vgap="5">
                         <Label text="Nazwa" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
                         <TextField fx:id="clNameField" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
-
                         <Label text="Cena" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
                         <TextField fx:id="clPriceField" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
-
                         <Label text="Waga" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
                         <TextField fx:id="clWeightField" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
-
                         <Label text="Stan" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
                         <TextField fx:id="clStateField" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
 
                         <HBox spacing="10" GridPane.rowIndex="4" GridPane.columnIndex="1">
-                            <Button text="Naciśnij" fx:id="pressBtn"/>
-                            <Button text="Zwolnij" fx:id="releaseBtn"/>
+                            <Button text="Naciśnij" fx:id="pressBtn" onAction="#onPressClutch"/>
+                            <Button text="Zwolnij" fx:id="releaseBtn" onAction="#onReleaseClutch"/>
                         </HBox>
                     </GridPane>
                 </content>
@@ -137,7 +126,7 @@
             </padding>
 
             <Label text="Mapa"/>
-            <ImageView fx:id="carImageView" fitWidth="150" preserveRatio="true"/>
+            <ImageView fx:id="carImageView" fitWidth="50" preserveRatio="true"/>
             <Label text="Car"/>
         </VBox>
     </center>

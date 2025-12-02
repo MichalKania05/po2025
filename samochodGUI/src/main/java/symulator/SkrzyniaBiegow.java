@@ -1,0 +1,90 @@
+package symulator;
+import static java.lang.Math.pow;
+
+public class SkrzyniaBiegow extends Komponent
+{
+    // Pola
+    private int aktBieg;
+    private final int iloscBiegow;
+    private double aktPrzelozenie;
+    private Sprzeglo sprzeglo;
+
+
+    // Konstruktor
+    public SkrzyniaBiegow(String producent, String model, String nazwa,
+                          double waga, double cena, int iloscBiegow, Sprzeglo sprzeglo)
+    {
+        super(producent, model, nazwa, waga, cena); // Komponent
+        this.iloscBiegow = iloscBiegow;
+        this.aktBieg = getAktBieg();
+        this.aktPrzelozenie = 0.0;
+        this.sprzeglo = sprzeglo;
+    }
+
+
+    // Metody
+    public void zwiekszBieg()
+    {
+        if (sprzeglo.stanSprzegla() && (aktBieg < iloscBiegow))
+        {
+            aktBieg++;
+            System.out.println("Zwiększono bieg: " + getAktBieg());
+
+            if (aktBieg == 0)
+                {aktPrzelozenie = 0.0;}
+            else
+                {aktPrzelozenie = 3.8 / pow(aktBieg, 0.85);}
+        }
+
+        else
+        {
+            System.out.println("Nie można zwiększyć biegu!");
+        }
+    }
+
+    public void zmniejszBieg()
+    {
+        if (sprzeglo.stanSprzegla() && (aktBieg > 0))
+        {
+            aktBieg--;
+            System.out.println("Zmniejszono bieg: " + getAktBieg());
+
+            if (aktBieg == 0)
+                {aktPrzelozenie = 0.0;}
+            else
+            {aktPrzelozenie = 3.8 / pow(aktBieg, 0.85);}
+        }
+
+        else
+        {
+            System.out.println("Nie można zmniejszyć biegu!");
+        }
+    }
+
+
+    // Gettery
+    public int getAktBieg()
+    {
+        return aktBieg;
+    }
+
+    public double getAktPrzelozenie()
+    {
+        return aktPrzelozenie;
+    }
+
+    public int getIloscBiegow()
+    {
+        return iloscBiegow;
+    }
+
+    public Sprzeglo getSprzeglo()
+    {
+        return sprzeglo;
+    }
+
+    public void setSprzeglo(Sprzeglo sprzeglo)
+    {
+        this.sprzeglo = sprzeglo;
+    }
+}
