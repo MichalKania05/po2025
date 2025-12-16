@@ -33,7 +33,7 @@ public class HelloController {
 
     @FXML private ImageView carImageView;
 
-    @FXML private Button addNewBtn;
+    @FXML private Button addNewBtn, removeBtn;
 
     private ObservableList<Samochod> samochody = FXCollections.observableArrayList();
 
@@ -76,6 +76,7 @@ public class HelloController {
                 e.printStackTrace();
             }
         });
+
     }
 
     // Metoda odświeżająca widok
