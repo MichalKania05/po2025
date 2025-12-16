@@ -47,7 +47,6 @@
                         <HBox spacing="10" GridPane.rowIndex="4" GridPane.columnIndex="1">
                             <Button text="Włącz" fx:id="onBtn" onAction="#onOnButton"/>
                             <Button text="Wyłącz" fx:id="offBtn" onAction="#onOffButton"/>
-                            <Button text="Button" fx:id="otherBtn"/>
                         </HBox>
                     </GridPane>
                 </content>
