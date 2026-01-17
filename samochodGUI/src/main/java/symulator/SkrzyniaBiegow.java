@@ -6,7 +6,7 @@ public class SkrzyniaBiegow extends Komponent
     // Pola
     private int aktBieg;
     private final int iloscBiegow;
-    private double aktPrzelozenie;
+    // private double aktPrzelozenie;
     private Sprzeglo sprzeglo;
 
 
@@ -17,7 +17,7 @@ public class SkrzyniaBiegow extends Komponent
         super(producent, model, nazwa, waga, cena); // Komponent
         this.iloscBiegow = iloscBiegow;
         this.aktBieg = getAktBieg();
-        this.aktPrzelozenie = 0.0;
+        //this.aktPrzelozenie = 0.0;
         this.sprzeglo = sprzeglo;
     }
 
@@ -30,10 +30,12 @@ public class SkrzyniaBiegow extends Komponent
             aktBieg++;
             System.out.println("Zwiększono bieg: " + getAktBieg());
 
+            /*
             if (aktBieg == 0)
                 {aktPrzelozenie = 0.0;}
             else
                 {aktPrzelozenie = 3.8 / pow(aktBieg, 0.85);}
+             */
         }
 
         else
@@ -49,10 +51,12 @@ public class SkrzyniaBiegow extends Komponent
             aktBieg--;
             System.out.println("Zmniejszono bieg: " + getAktBieg());
 
+            /*
             if (aktBieg == 0)
                 {aktPrzelozenie = 0.0;}
             else
             {aktPrzelozenie = 3.8 / pow(aktBieg, 0.85);}
+             */
         }
 
         else
@@ -68,10 +72,7 @@ public class SkrzyniaBiegow extends Komponent
         return aktBieg;
     }
 
-    public double getAktPrzelozenie()
-    {
-        return aktPrzelozenie;
-    }
+    // public double getAktPrzelozenie() {return aktPrzelozenie;}
 
     public int getIloscBiegow()
     {

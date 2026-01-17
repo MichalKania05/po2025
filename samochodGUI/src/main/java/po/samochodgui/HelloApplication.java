@@ -14,7 +14,7 @@ public class HelloApplication extends Application {
         Parent root = loader.load();
 
         Scene scene = new Scene(root, 900, 600);
-        stage.setTitle("Hello!");
+        stage.setTitle("Symulator samochodu");
         stage.setScene(scene);
         stage.show();
     }

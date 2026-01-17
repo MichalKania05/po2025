@@ -9,14 +9,12 @@ public class Pozycja
     private double x;
     private double y;
 
-
     // Konstruktor
     public Pozycja(double x, double y)
     {
         this.x = x;
         this.y = y;
     }
-
 
     // Metody
     public void aktPozycje(double deltaX, double deltaY)
@@ -30,39 +28,31 @@ public class Pozycja
         return "Pozycja: (" + x + " , " + y + ")";
     }
 
-    public void przemiesc(Pozycja cel, double V, double deltaT)
+    public synchronized void przemiesc(Pozycja cel, double predkosc, double deltaT)
     {
-        double x1 = this.get_x();
-        double y1 = this.get_y();
-        double x2 = cel.get_x();
-        double y2 = cel.get_y();
-        double deltaX = x2 - x1; // Całkowite przemieszczenie w osi OX
-        double deltaY = y2 - y1; // Całkowite przemieszczenie w osi OY
-        double odleglosc = sqrt(pow(deltaX, 2) + pow(deltaY, 2)); // Całkowita odległość do pokonania
-        double kawalek = V * deltaT; // Taki dystans pokonuje samochód z prędkością V w czasie deltaT
+        double dx = cel.get_x() - x;
+        double dy = cel.get_y() - y;
+        double dystans = Math.sqrt(dx*dx + dy*dy);
 
-        if(odleglosc <= kawalek)
+        if(dystans < 1e-3)
         {
-            this.x = x2;
-            this.y = y2;
+            x = cel.get_x();
+            y = cel.get_y();
+            return;
         }
 
-        else
-        {
-            this.x += deltaX * (kawalek/odleglosc);
-            this.y += deltaY * (kawalek/odleglosc);
-        }
+        double maxDist = predkosc * deltaT;
+        double ratio = Math.min(1.0, maxDist / dystans);
+
+        x += dx * ratio;
+        y += dy * ratio;
     }
-
 
     // Gettery
-    public double get_x()
-    {
-        return x;
-    }
+    public synchronized double get_x() { return x; }
+    public synchronized double get_y() { return y; }
 
-    public double get_y()
-    {
-        return y;
-    }
+    // Settery
+    public synchronized void set_x(double x) { this.x = x; }
+    public synchronized void set_y(double y) { this.y = y; }
 }

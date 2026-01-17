@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import symulator.*;
 
@@ -35,6 +36,8 @@ public class HelloController {
 
     @FXML private Button addNewBtn, removeBtn;
 
+    @FXML private AnchorPane mapPane;
+
     private ObservableList<Samochod> samochody = FXCollections.observableArrayList();
 
     @FXML
@@ -60,6 +63,15 @@ public class HelloController {
             refresh();
         });
 
+        aktSam = samochody.get(0); // Defaultowy samochód
+        aktSam.addListener(() -> {
+            javafx.application.Platform.runLater(() -> {
+                refresh(); // odświeża pola
+                carImageView.setTranslateX(aktSam.getPozycja().get_x());
+                carImageView.setTranslateY(aktSam.getPozycja().get_y());
+            });
+        });
+
         // Ustaw ikonę samochodu
         Image samIkona = new Image(getClass().getResourceAsStream("/samochod.png"));
         carImageView.setImage(samIkona);
@@ -67,6 +79,13 @@ public class HelloController {
         carImageView.setFitHeight(40);
         carImageView.setTranslateX(0);
         carImageView.setTranslateY(0);
+        carImageView.setOnMouseClicked(event -> {
+            if (aktSam != null) {
+                double x = event.getX();
+                double y = event.getY();
+                aktSam.jedzDo(new Pozycja(x, y));
+            }
+        });
 
         // Przycisk otwierający okno dodawania
         addNewBtn.setOnAction(event -> {
@@ -78,6 +97,7 @@ public class HelloController {
         });
 
     }
+
 
     // Metoda odświeżająca widok
     void refresh() {
@@ -105,6 +125,20 @@ public class HelloController {
         clPriceField.setText(String.format("%.2f", spr.getCena()));
         clWeightField.setText(String.format("%.2f", spr.getWaga()));
         clStateField.setText(spr.stanSprzegla() ? "Wciśnięte" : "Zwolnione");
+
+        if (aktSam != null)
+        {
+            carImageView.setTranslateX(aktSam.getPozycja().get_x());
+            carImageView.setTranslateY(aktSam.getPozycja().get_y());
+        }
+
+        mapPane.setOnMouseClicked(event -> {
+            if (aktSam != null) {
+                double x = event.getX();
+                double y = event.getY();
+                aktSam.jedzDo(new Pozycja(x, y));
+            }
+        });
     }
 
     @FXML private void onOnButton() {

@@ -119,15 +119,10 @@
     </left>
 
     <center>
-        <VBox spacing="5">
-            <padding>
-                <Insets top="10" right="10" bottom="10" left="10"/>
-            </padding>
-
-            <Label text="Mapa"/>
-            <ImageView fx:id="carImageView" fitWidth="50" preserveRatio="true"/>
-            <Label text="Car"/>
-        </VBox>
+        <AnchorPane fx:id="mapPane" prefWidth="600" prefHeight="400">
+            <Label text="Mapa" layoutX="10" layoutY="10"/>
+            <ImageView fx:id="carImageView" fitWidth="60" fitHeight="40" preserveRatio="true" layoutX="0" layoutY="0"/>
+        </AnchorPane>
     </center>
 
 </BorderPane>
