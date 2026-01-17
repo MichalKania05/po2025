@@ -1,5 +1,6 @@
 package po.samochodgui;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -13,6 +14,8 @@ import javafx.stage.Stage;
 import symulator.*;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class HelloController {
 
@@ -32,75 +35,91 @@ public class HelloController {
     @FXML private TextField clNameField, clPriceField, clWeightField, clStateField;
     @FXML private Button pressBtn, releaseBtn;
 
-    @FXML private ImageView carImageView;
-
     @FXML private Button addNewBtn, removeBtn;
-
     @FXML private AnchorPane mapPane;
 
     private ObservableList<Samochod> samochody = FXCollections.observableArrayList();
+    private Map<Samochod, ImageView> samochodIcons = new HashMap<>();
+
+    // 🔑 JEDNO źródło obrazu dla wszystkich ikon
+    private Image carImage;
 
     @FXML
     public void initialize() {
-        /*
-        Sprzeglo spr1 = new Sprzeglo("P", "SP1", "Sprzeglo1", 0.005, 250);
-        SkrzyniaBiegow sb1 = new SkrzyniaBiegow("P", "SB1", "Skrzynia1", 25, 5000, 6, spr1);
-        Silnik sil1 = new Silnik("S", "SIL1", "Silnik1", 10000, 50000, 8000);
-        Samochod sam1 = new Samochod("XYZ-1234", "Golf 5", 250, sil1, sb1);
-        samochody.add(sam1);
-        */
 
-        // Defaultowy samochód:
-        Sprzeglo SPRdef = new Sprzeglo("SPRprod", "SPRmod", "SPRna", 0.005, 250);
-        SkrzyniaBiegow SBdef = new SkrzyniaBiegow("SBprod", "SBmod", "SBna", 25, 5000, 6, SPRdef);
-        Silnik SILdef = new Silnik("SILprod", "SILmod", "SILna", 10000, 50000, 8000);
-        Samochod SAMdef = new Samochod("SAMnr", "SAMmod", 250, SILdef, SBdef);
-        samochody.add(SAMdef);
+        // ===== Załaduj obraz RAZ =====
+        carImage = new Image(getClass().getResourceAsStream("/samochod.png"));
 
+        // ===== Defaultowy samochód =====
+        Sprzeglo spr = new Sprzeglo("SPR", "SPR", "Sprzęgło", 0.005, 250);
+        SkrzyniaBiegow sb = new SkrzyniaBiegow("SB", "SB", "Skrzynia", 25, 5000, 6, spr);
+        Silnik sil = new Silnik("SIL", "SIL", "Silnik", 10000, 50000, 8000);
+        Samochod sam = new Samochod("SAM-001", "Default", 250, sil, sb);
+
+        samochody.add(sam);
+        aktSam = sam;
+
+        dodajIkoneSamochodu(sam);
+
+        // ===== ComboBox =====
         carComboBox.setItems(samochody);
-        carComboBox.setOnAction(event -> {
-            aktSam = carComboBox.getValue();
+        carComboBox.getSelectionModel().selectFirst();
+        carComboBox.setOnAction(e -> {
+            aktSam = carComboBox.getSelectionModel().getSelectedItem();
             refresh();
         });
 
-        aktSam = samochody.get(0); // Defaultowy samochód
-        aktSam.addListener(() -> {
-            javafx.application.Platform.runLater(() -> {
-                refresh(); // odświeża pola
-                carImageView.setTranslateX(aktSam.getPozycja().get_x());
-                carImageView.setTranslateY(aktSam.getPozycja().get_y());
-            });
-        });
-
-        // Ustaw ikonę samochodu
-        Image samIkona = new Image(getClass().getResourceAsStream("/samochod.png"));
-        carImageView.setImage(samIkona);
-        carImageView.setFitWidth(60);
-        carImageView.setFitHeight(40);
-        carImageView.setTranslateX(0);
-        carImageView.setTranslateY(0);
-        carImageView.setOnMouseClicked(event -> {
+        // ===== Kliknięcie na mapę =====
+        mapPane.setOnMouseClicked(event -> {
             if (aktSam != null) {
-                double x = event.getX();
-                double y = event.getY();
-                aktSam.jedzDo(new Pozycja(x, y));
+                aktSam.jedzDo(new Pozycja(event.getX(), event.getY()));
             }
         });
 
-        // Przycisk otwierający okno dodawania
-        addNewBtn.setOnAction(event -> {
+        // ===== Przycisk dodawania =====
+        addNewBtn.setOnAction(e -> {
             try {
                 openAddCarWindow();
-            } catch (IOException e) {
-                e.printStackTrace();
+            } catch (IOException ex) {
+                ex.printStackTrace();
             }
         });
 
+        refresh();
+    }
+
+    // ================= IKONY =================
+
+    private void dodajIkoneSamochodu(Samochod sam) {
+        ImageView iv = new ImageView(carImage);
+        iv.setFitWidth(60);
+        iv.setFitHeight(40);
+        iv.setPreserveRatio(true);
+
+        iv.setTranslateX(sam.getPozycja().get_x());
+        iv.setTranslateY(sam.getPozycja().get_y());
+
+        mapPane.getChildren().add(iv);
+        samochodIcons.put(sam, iv);
+
+        sam.addListener(() -> Platform.runLater(() -> {
+
+            // 🔹 aktualizacja pozycji ikony
+            ImageView icon = samochodIcons.get(sam);
+            if (icon != null)
+            {
+                icon.setTranslateX(sam.getPozycja().get_x());
+                icon.setTranslateY(sam.getPozycja().get_y());
+            }
+
+            if (sam == aktSam) {refresh();}
+        }));
     }
 
 
-    // Metoda odświeżająca widok
-    void refresh() {
+    // ================= REFRESH =================
+
+    private void refresh() {
         if (aktSam == null) return;
 
         modelField.setText(aktSam.getModel());
@@ -125,88 +144,36 @@ public class HelloController {
         clPriceField.setText(String.format("%.2f", spr.getCena()));
         clWeightField.setText(String.format("%.2f", spr.getWaga()));
         clStateField.setText(spr.stanSprzegla() ? "Wciśnięte" : "Zwolnione");
-
-        if (aktSam != null)
-        {
-            carImageView.setTranslateX(aktSam.getPozycja().get_x());
-            carImageView.setTranslateY(aktSam.getPozycja().get_y());
-        }
-
-        mapPane.setOnMouseClicked(event -> {
-            if (aktSam != null) {
-                double x = event.getX();
-                double y = event.getY();
-                aktSam.jedzDo(new Pozycja(x, y));
-            }
-        });
     }
 
-    @FXML private void onOnButton() {
-        if (aktSam != null) {
-            aktSam.wlacz();
-            refresh();
-        }
-    }
+    // ================= AKCJE =================
 
-    @FXML private void onOffButton() {
-        if (aktSam != null) {
-            aktSam.wylacz();
-            refresh();
-        }
-    }
+    @FXML private void onOnButton() { if (aktSam != null) aktSam.wlacz(); }
+    @FXML private void onOffButton() { if (aktSam != null) aktSam.wylacz(); }
+    @FXML private void onGearUpBtn() { if (aktSam != null) aktSam.getSkrzynia().zwiekszBieg(); }
+    @FXML private void onGearDownBtn() { if (aktSam != null) aktSam.getSkrzynia().zmniejszBieg(); }
+    @FXML private void onPressClutch() { if (aktSam != null) aktSam.getSkrzynia().getSprzeglo().wcisnij(); }
+    @FXML private void onReleaseClutch() { if (aktSam != null) aktSam.getSkrzynia().getSprzeglo().zwolnij(); }
+    @FXML private void gasUp() { if (aktSam != null) aktSam.getSilnik().zwiekszObroty(); }
+    @FXML private void gasDown() { if (aktSam != null) aktSam.getSilnik().zmniejszObroty(); }
 
-    @FXML private void onGearUpBtn() {
-        if (aktSam != null) {
-            aktSam.getSkrzynia().zwiekszBieg();
-            refresh();
-        }
-    }
+    // ================= OKNO DODAWANIA =================
 
-    @FXML private void onGearDownBtn() {
-        if (aktSam != null) {
-            aktSam.getSkrzynia().zmniejszBieg();
-            refresh();
-        }
-    }
-
-    @FXML private void onPressClutch() {
-        if (aktSam != null) {
-            aktSam.getSkrzynia().getSprzeglo().wcisnij();
-            refresh();
-        }
-    }
-
-    @FXML private void onReleaseClutch() {
-        if (aktSam != null) {
-            aktSam.getSkrzynia().getSprzeglo().zwolnij();
-            refresh();
-        }
-    }
-
-    @FXML private void gasUp() {
-        if (aktSam != null) {
-            aktSam.getSilnik().zwiekszObroty();
-            refresh();
-        }
-    }
-
-    @FXML private void gasDown() {
-        if (aktSam != null) {
-            aktSam.getSilnik().zmniejszObroty();
-            refresh();
-        }
-    }
-
-    // Otwórz okno dodawania nowego samochodu
     public void openAddCarWindow() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("DodajSamochod.fxml"));
         Stage stage = new Stage();
         stage.setScene(new Scene(loader.load()));
-        stage.setTitle("Dodaj nowy samochód");
+        stage.setTitle("Dodaj samochód");
         stage.show();
 
-        // Przekazanie listy samochodów do kontrolera
-        DodajSamochodController controller = loader.getController();
-        controller.setSamochody(samochody);
+        DodajSamochodController c = loader.getController();
+        c.setMainController(this);
+    }
+
+    public void dodajSamochod(Samochod nowySam) {
+        samochody.add(nowySam);
+        carComboBox.getSelectionModel().select(nowySam);
+        aktSam = nowySam;
+        dodajIkoneSamochodu(nowySam);
     }
 }
