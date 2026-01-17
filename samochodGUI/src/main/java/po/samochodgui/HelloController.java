@@ -104,7 +104,7 @@ public class HelloController {
 
         sam.addListener(() -> Platform.runLater(() -> {
 
-            // 🔹 aktualizacja pozycji ikony
+            // aktualizacja pozycji ikony
             ImageView icon = samochodIcons.get(sam);
             if (icon != null)
             {
@@ -148,14 +148,75 @@ public class HelloController {
 
     // ================= AKCJE =================
 
-    @FXML private void onOnButton() { if (aktSam != null) aktSam.wlacz(); }
-    @FXML private void onOffButton() { if (aktSam != null) aktSam.wylacz(); }
-    @FXML private void onGearUpBtn() { if (aktSam != null) aktSam.getSkrzynia().zwiekszBieg(); }
-    @FXML private void onGearDownBtn() { if (aktSam != null) aktSam.getSkrzynia().zmniejszBieg(); }
-    @FXML private void onPressClutch() { if (aktSam != null) aktSam.getSkrzynia().getSprzeglo().wcisnij(); }
-    @FXML private void onReleaseClutch() { if (aktSam != null) aktSam.getSkrzynia().getSprzeglo().zwolnij(); }
-    @FXML private void gasUp() { if (aktSam != null) aktSam.getSilnik().zwiekszObroty(); }
-    @FXML private void gasDown() { if (aktSam != null) aktSam.getSilnik().zmniejszObroty(); }
+    @FXML
+    private void onOnButton() {
+        if (aktSam == null) return;
+
+        try {
+            aktSam.wlacz();
+        } catch (IllegalStateException e) {
+            pokazBlad(e.getMessage());
+        }
+    }
+
+    @FXML
+    private void onOffButton() {
+        if (aktSam == null) return;
+
+        try {
+            aktSam.wylacz();
+        } catch (IllegalStateException e) {
+            pokazBlad(e.getMessage());
+        }
+    }
+
+    @FXML private void onGearUpBtn() {
+        try {
+            aktSam.getSkrzynia().zwiekszBieg();
+        } catch (IllegalStateException e) {
+            pokazBlad(e.getMessage());
+        }
+    }
+
+    @FXML private void onGearDownBtn() {
+        try {
+            aktSam.getSkrzynia().zmniejszBieg();
+        } catch (IllegalStateException e) {
+            pokazBlad(e.getMessage());
+        }
+    }
+
+    @FXML private void onPressClutch() {
+        try {
+            aktSam.getSkrzynia().getSprzeglo().wcisnij();
+        } catch (IllegalStateException e) {
+            pokazBlad(e.getMessage());
+        }
+    }
+
+    @FXML private void onReleaseClutch() {
+        try {
+            aktSam.getSkrzynia().getSprzeglo().zwolnij();
+        } catch (IllegalStateException e) {
+            pokazBlad(e.getMessage());
+        }
+    }
+
+    @FXML private void gasUp() {
+        try {
+            aktSam.getSilnik().zwiekszObroty();
+        } catch (IllegalStateException e) {
+            pokazBlad(e.getMessage());
+        }
+    }
+
+    @FXML private void gasDown() {
+        try {
+            aktSam.getSilnik().zmniejszObroty();
+        } catch (IllegalStateException e) {
+            pokazBlad(e.getMessage());
+        }
+    }
 
     // ================= OKNO DODAWANIA =================
 
@@ -175,5 +236,13 @@ public class HelloController {
         carComboBox.getSelectionModel().select(nowySam);
         aktSam = nowySam;
         dodajIkoneSamochodu(nowySam);
+    }
+
+    private void pokazBlad(String msg) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Błąd");
+        alert.setHeaderText(null);
+        alert.setContentText(msg);
+        alert.showAndWait();
     }
 }

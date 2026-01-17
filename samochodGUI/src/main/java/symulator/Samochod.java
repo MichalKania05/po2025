@@ -65,24 +65,18 @@ public class Samochod extends Thread {
         }
     }
 
-    public void wlacz()
-    {
-        if (!stanWlaczenia)
-        {
-            silnik.uruchom();
-            stanWlaczenia = true;
+    public void wlacz() {
+        if (silnik.getObroty() > 0) {
+            throw new IllegalStateException("Samochód jest już włączony");
         }
+        silnik.uruchom();
     }
 
-    public void wylacz()
-    {
-        if (stanWlaczenia)
-        {
-            silnik.zatrzymaj();
-            while (skrzynia.getAktBieg() > 0) {skrzynia.zmniejszBieg();}
-            stanWlaczenia = false;
-            cel = null;
+    public void wylacz() {
+        if (silnik.getObroty() == 0) {
+            throw new IllegalStateException("Samochód jest już wyłączony");
         }
+        silnik.zatrzymaj();
     }
 
     public void jedzDo(Pozycja nowyCel)
