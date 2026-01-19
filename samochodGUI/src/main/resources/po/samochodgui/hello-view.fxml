@@ -20,7 +20,7 @@
             <ToolBar>
                 <ComboBox fx:id="carComboBox" promptText="Samochód:" prefWidth="200"/>
                 <Button text="Dodaj nowy" fx:id="addNewBtn"/>
-                <Button text="Usuń" fx:id="removeBtn"/>
+                <Button text="Usuń" fx:id="removeBtn" onAction="#onRemoveCar"/>
             </ToolBar>
         </VBox>
     </top>
@@ -87,8 +87,8 @@
                         <TextField fx:id="engRPMField" GridPane.rowIndex="3" GridPane.columnIndex="1" editable="false"/>
 
                         <HBox spacing="10" GridPane.rowIndex="4" GridPane.columnIndex="1">
-                            <Button text="Dodaj gazu" fx:id="gasBtn"/>
-                            <Button text="Ujmij gazu" fx:id="noGasBtn"/>
+                            <Button text="Dodaj gazu" fx:id="gasBtn" onAction="#gasUp"/>
+                            <Button text="Ujmij gazu" fx:id="noGasBtn" onAction="#gasDown"/>
                         </HBox>
                     </GridPane>
                 </content>

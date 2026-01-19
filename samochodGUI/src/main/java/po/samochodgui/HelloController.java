@@ -17,9 +17,13 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class HelloController {
+public class HelloController implements Listener {
+
+    @Override
+    public void update() {Platform.runLater(this::refresh);}
 
     private Samochod aktSam;
+    private Samochod defaultSam;
 
     @FXML private ComboBox<Samochod> carComboBox;
 
@@ -41,8 +45,35 @@ public class HelloController {
     private ObservableList<Samochod> samochody = FXCollections.observableArrayList();
     private Map<Samochod, ImageView> samochodIcons = new HashMap<>();
 
-    // 🔑 JEDNO źródło obrazu dla wszystkich ikon
+    // jedno źródło obrazu dla wszystkich ikon
     private Image carImage;
+
+    @FXML
+    private void onRemoveCar() {
+        if (aktSam == null || aktSam == defaultSam) return;
+
+        // usunięcie ikony z mapy
+        ImageView icon = samochodIcons.remove(aktSam);
+        if (icon != null) {
+            mapPane.getChildren().remove(icon);
+        }
+
+        // usunięcie listenera
+        aktSam.removeListener(this);
+
+        // (opcjonalnie) zatrzymanie wątku
+        aktSam.stopSamochod();
+
+        // usunięcie z listy
+        samochody.remove(aktSam);
+
+        // powrót do defaultowego
+        aktSam = defaultSam;
+        carComboBox.getSelectionModel().select(defaultSam);
+
+        updateRemoveButtonState();
+        refresh();
+    }
 
     @FXML
     public void initialize() {
@@ -50,12 +81,14 @@ public class HelloController {
         // ===== Załaduj obraz RAZ =====
         carImage = new Image(getClass().getResourceAsStream("/samochod.png"));
 
-        // ===== Defaultowy samochód =====
         Sprzeglo spr = new Sprzeglo("SPR", "SPR", "Sprzęgło", 0.005, 250);
         SkrzyniaBiegow sb = new SkrzyniaBiegow("SB", "SB", "Skrzynia", 25, 5000, 6, spr);
         Silnik sil = new Silnik("SIL", "SIL", "Silnik", 10000, 50000, 8000);
+
+        // Defaultowy samochód
         Samochod sam = new Samochod("SAM-001", "Default", 250, sil, sb);
 
+        defaultSam = sam;
         samochody.add(sam);
         aktSam = sam;
 
@@ -67,6 +100,7 @@ public class HelloController {
         carComboBox.setOnAction(e -> {
             aktSam = carComboBox.getSelectionModel().getSelectedItem();
             refresh();
+            updateRemoveButtonState();
         });
 
         // ===== Kliknięcie na mapę =====
@@ -85,6 +119,7 @@ public class HelloController {
             }
         });
 
+        updateRemoveButtonState();
         refresh();
     }
 
@@ -102,23 +137,11 @@ public class HelloController {
         mapPane.getChildren().add(iv);
         samochodIcons.put(sam, iv);
 
-        sam.addListener(() -> Platform.runLater(() -> {
-
-            // aktualizacja pozycji ikony
-            ImageView icon = samochodIcons.get(sam);
-            if (icon != null)
-            {
-                icon.setTranslateX(sam.getPozycja().get_x());
-                icon.setTranslateY(sam.getPozycja().get_y());
-            }
-
-            if (sam == aktSam) {refresh();}
-        }));
+        sam.addListener(this);
     }
 
 
     // ================= REFRESH =================
-
     private void refresh() {
         if (aktSam == null) return;
 
@@ -144,6 +167,12 @@ public class HelloController {
         clPriceField.setText(String.format("%.2f", spr.getCena()));
         clWeightField.setText(String.format("%.2f", spr.getWaga()));
         clStateField.setText(spr.stanSprzegla() ? "Wciśnięte" : "Zwolnione");
+
+        ImageView icon = samochodIcons.get(aktSam);
+        if (icon != null) {
+            icon.setTranslateX(aktSam.getPozycja().get_x());
+            icon.setTranslateY(aktSam.getPozycja().get_y());
+        }
     }
 
     // ================= AKCJE =================
@@ -151,9 +180,9 @@ public class HelloController {
     @FXML
     private void onOnButton() {
         if (aktSam == null) return;
-
         try {
             aktSam.wlacz();
+            refresh();
         } catch (IllegalStateException e) {
             pokazBlad(e.getMessage());
         }
@@ -162,9 +191,9 @@ public class HelloController {
     @FXML
     private void onOffButton() {
         if (aktSam == null) return;
-
         try {
             aktSam.wylacz();
+            refresh();
         } catch (IllegalStateException e) {
             pokazBlad(e.getMessage());
         }
@@ -173,6 +202,7 @@ public class HelloController {
     @FXML private void onGearUpBtn() {
         try {
             aktSam.getSkrzynia().zwiekszBieg();
+            refresh();
         } catch (IllegalStateException e) {
             pokazBlad(e.getMessage());
         }
@@ -181,6 +211,7 @@ public class HelloController {
     @FXML private void onGearDownBtn() {
         try {
             aktSam.getSkrzynia().zmniejszBieg();
+            refresh();
         } catch (IllegalStateException e) {
             pokazBlad(e.getMessage());
         }
@@ -189,6 +220,7 @@ public class HelloController {
     @FXML private void onPressClutch() {
         try {
             aktSam.getSkrzynia().getSprzeglo().wcisnij();
+            refresh();
         } catch (IllegalStateException e) {
             pokazBlad(e.getMessage());
         }
@@ -197,6 +229,7 @@ public class HelloController {
     @FXML private void onReleaseClutch() {
         try {
             aktSam.getSkrzynia().getSprzeglo().zwolnij();
+            refresh();
         } catch (IllegalStateException e) {
             pokazBlad(e.getMessage());
         }
@@ -205,6 +238,7 @@ public class HelloController {
     @FXML private void gasUp() {
         try {
             aktSam.getSilnik().zwiekszObroty();
+            refresh();
         } catch (IllegalStateException e) {
             pokazBlad(e.getMessage());
         }
@@ -213,6 +247,7 @@ public class HelloController {
     @FXML private void gasDown() {
         try {
             aktSam.getSilnik().zmniejszObroty();
+            refresh();
         } catch (IllegalStateException e) {
             pokazBlad(e.getMessage());
         }
@@ -244,5 +279,10 @@ public class HelloController {
         alert.setHeaderText(null);
         alert.setContentText(msg);
         alert.showAndWait();
+    }
+
+    // Zablokuj usuwanie defaultowego samochodu
+    private void updateRemoveButtonState() {
+        removeBtn.setDisable(aktSam == null || aktSam == defaultSam);
     }
 }

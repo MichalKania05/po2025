@@ -19,6 +19,7 @@ public class Samochod extends Thread {
     private static final double DELTA_T = 0.1; // 100 ms
     private static final long SLEEP_MS = 100;
 
+    private volatile boolean running = true;
 
     public Samochod(String nrRejest, String model, double maxPredkosc,
                     Silnik silnik, SkrzyniaBiegow skrzynia)
@@ -38,7 +39,7 @@ public class Samochod extends Thread {
 
     @Override
     public void run() {
-        while (true) {
+        while (running) {
             try {
                 if (stanWlaczenia && cel != null) {
                     double V = getAktPredkosc();
@@ -46,10 +47,8 @@ public class Samochod extends Thread {
                     if (V > 0) {
                         pozycja.przemiesc(cel, V, DELTA_T);
 
-                        // Powiadamiamy GUI, że coś się zmieniło
                         notifyListeners();
 
-                        // Jeśli dojechaliśmy do celu – zatrzymujemy cel
                         if (pozycja.get_x() == cel.get_x()
                                 && pozycja.get_y() == cel.get_y()) {
                             cel = null;
@@ -60,7 +59,7 @@ public class Samochod extends Thread {
                 Thread.sleep(SLEEP_MS);
 
             } catch (InterruptedException e) {
-                break;
+                if (!running) break;
             }
         }
     }
@@ -70,6 +69,7 @@ public class Samochod extends Thread {
             throw new IllegalStateException("Samochód jest już włączony");
         }
         silnik.uruchom();
+        stanWlaczenia = true;
     }
 
     public void wylacz() {
@@ -77,6 +77,7 @@ public class Samochod extends Thread {
             throw new IllegalStateException("Samochód jest już wyłączony");
         }
         silnik.zatrzymaj();
+        stanWlaczenia = false;
     }
 
     public void jedzDo(Pozycja nowyCel)
@@ -85,6 +86,11 @@ public class Samochod extends Thread {
         {
             this.cel = nowyCel;
         }
+    }
+
+    public void stopSamochod() {
+        running = false;
+        interrupt();
     }
 
     // --- Gettery ---
@@ -114,11 +120,8 @@ public class Samochod extends Thread {
     public String toString() {return model + " (" + nrRejest + ")";}
 
     // Obserwatorzy
-    private List<Runnable> listeners = new ArrayList<>();
-    public void addListener(Runnable listener) {listeners.add(listener);}
-    private void notifyListeners()
-    {
-        for (Runnable listener : listeners)
-        {listener.run();}
-    }
+    private List<Listener> listeners = new ArrayList<>();
+    public void addListener(Listener listener) {listeners.add(listener);}
+    public void removeListener(Listener listener) {listeners.remove(listener);}
+    private void notifyListeners() { for (Listener l : listeners) {l.update();} }
 }
