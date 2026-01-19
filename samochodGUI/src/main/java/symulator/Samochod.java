@@ -16,7 +16,7 @@ public class Samochod extends Thread {
     private Pozycja pozycja;
     private Pozycja cel;
 
-    private static final double DELTA_T = 0.1; // 100 ms
+    private static final double DELTA_T = 0.01;
     private static final long SLEEP_MS = 100;
 
     private volatile boolean running = true;

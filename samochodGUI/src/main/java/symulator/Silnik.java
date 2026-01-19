@@ -16,7 +16,7 @@ public class Silnik extends Komponent {
         if (obroty > 0) {
             throw new IllegalStateException("Silnik jest już uruchomiony");
         }
-        obroty = 1000;
+        obroty = 1000; // startowe obroty przy uruchomieniu
     }
 
     public void zatrzymaj() {
@@ -31,10 +31,11 @@ public class Silnik extends Komponent {
             throw new IllegalStateException("Nie można dodać gazu – silnik jest wyłączony");
         }
 
-        obroty += 100;
-        if (obroty > maxObroty) {
-            obroty = maxObroty;
+        if (obroty + 500 > maxObroty) {
+            throw new IllegalStateException("Przekroczono maksymalne obroty (" + maxObroty + ")");
         }
+
+        obroty += 500;
     }
 
     public void zmniejszObroty() {
@@ -42,10 +43,11 @@ public class Silnik extends Komponent {
             throw new IllegalStateException("Silnik jest wyłączony");
         }
 
-        obroty -= 100;
-        if (obroty < 0) {
-            obroty = 0;
+        if (obroty - 500 < 0) {
+            throw new IllegalStateException("Obroty nie mogą być ujemne");
         }
+
+        obroty -= 500;
     }
 
     public int getMaxObroty() { return maxObroty; }

@@ -83,7 +83,7 @@ public class HelloController implements Listener {
 
         Sprzeglo spr = new Sprzeglo("SPR", "SPR", "Sprzęgło", 0.005, 250);
         SkrzyniaBiegow sb = new SkrzyniaBiegow("SB", "SB", "Skrzynia", 25, 5000, 6, spr);
-        Silnik sil = new Silnik("SIL", "SIL", "Silnik", 10000, 50000, 8000);
+        Silnik sil = new Silnik("SIL", "SIL", "Silnik", 10000, 50000, 4000);
 
         // Defaultowy samochód
         Samochod sam = new Samochod("SAM-001", "Default", 250, sil, sb);
@@ -235,7 +235,8 @@ public class HelloController implements Listener {
         }
     }
 
-    @FXML private void gasUp() {
+    @FXML
+    private void gasUp() {
         try {
             aktSam.getSilnik().zwiekszObroty();
             refresh();
@@ -244,7 +245,9 @@ public class HelloController implements Listener {
         }
     }
 
-    @FXML private void gasDown() {
+    @FXML
+    private void gasDown() {
+        if (aktSam == null) return;
         try {
             aktSam.getSilnik().zmniejszObroty();
             refresh();
@@ -252,6 +255,7 @@ public class HelloController implements Listener {
             pokazBlad(e.getMessage());
         }
     }
+
 
     // ================= OKNO DODAWANIA =================
 
