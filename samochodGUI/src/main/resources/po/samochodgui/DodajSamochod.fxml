@@ -19,11 +19,11 @@
     <Label text="Numer rejestracyjny"/>
     <TextField fx:id="registrationTextField"/>
 
-    <Label text="Waga"/>
-    <TextField fx:id="weightTextField"/>
-
     <Label text="Prędkość maksymalna"/>
     <TextField fx:id="speedTextField"/>
+
+    <Label text="Maksymalne obroty"/>
+    <TextField fx:id="rpmTextField"/>
 
     <HBox spacing="10">
         <Button fx:id="confirmButton" text="Zatwierdź" onAction="#onConfirmButton"/>

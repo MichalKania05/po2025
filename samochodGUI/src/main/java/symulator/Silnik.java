@@ -50,6 +50,5 @@ public class Silnik extends Komponent {
         obroty -= 500;
     }
 
-    public int getMaxObroty() { return maxObroty; }
     public int getObroty() { return obroty; }
 }

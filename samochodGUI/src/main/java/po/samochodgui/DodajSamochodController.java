@@ -17,8 +17,8 @@ public class DodajSamochodController {
 
     @FXML private TextField modelTextField;
     @FXML private TextField registrationTextField;
-    @FXML private TextField weightTextField;
     @FXML private TextField speedTextField;
+    @FXML private TextField rpmTextField;
 
     @FXML private Button confirmButton;
     @FXML private Button cancelButton;
@@ -29,7 +29,6 @@ public class DodajSamochodController {
     public void setMainController(HelloController controller) {
         this.mainController = controller;
     }
-
     public void setSamochody(ObservableList<Samochod> samochody) {
         this.samochody = samochody;
     }
@@ -38,20 +37,26 @@ public class DodajSamochodController {
     private void onConfirmButton(ActionEvent event) {
         String model = modelTextField.getText();
         String registration = registrationTextField.getText();
-        double weight;
         double speed;
+        double rpm;
 
         try {
-            weight = Double.parseDouble(weightTextField.getText());
             speed = Double.parseDouble(speedTextField.getText());
         } catch (NumberFormatException e) {
             pokazBlad("Niepoprawne dane. Spróbuj ponownie.");
             return;
         }
 
+        try {
+            rpm = Double.parseDouble(rpmTextField.getText());
+        } catch (NumberFormatException e) {
+            pokazBlad("Niepoprawne dane. Spróbuj ponownie.");
+            return;
+        }
+
         Sprzeglo spr = new Sprzeglo("P", "Sprzeglo", "Sprzeglo", 0.01, 100);
-        SkrzyniaBiegow sb = new SkrzyniaBiegow("P", "Skrzynia", "Skrzynia", 20, 2000, 6, spr);
-        Silnik sil = new Silnik("S", "Silnik", "Silnik", 1000, 5000, 8000);
+        SkrzyniaBiegow sb = new SkrzyniaBiegow("P", "Skrzynia", "Skrzynia", 4700, 10000, 6, spr);
+        Silnik sil = new Silnik("S", "Silnik", "Silnik", 73000, 50000,  (int)rpm); // Własne maxObroty
         Samochod nowySam = new Samochod(registration, model, speed, sil, sb);
 
         if (mainController != null) {

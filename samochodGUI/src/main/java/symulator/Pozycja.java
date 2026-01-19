@@ -51,8 +51,4 @@ public class Pozycja
     // Gettery
     public synchronized double get_x() { return x; }
     public synchronized double get_y() { return y; }
-
-    // Settery
-    public synchronized void set_x(double x) { this.x = x; }
-    public synchronized void set_y(double y) { this.y = y; }
 }

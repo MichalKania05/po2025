@@ -1,5 +1,7 @@
 package symulator;
 
+import javafx.application.Platform;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,12 +48,28 @@ public class Samochod extends Thread {
 
                     if (V > 0) {
                         pozycja.przemiesc(cel, V, DELTA_T);
-
                         notifyListeners();
 
-                        if (pozycja.get_x() == cel.get_x()
-                                && pozycja.get_y() == cel.get_y()) {
+                        if (pozycja.get_x() == cel.get_x() && pozycja.get_y() == cel.get_y()) {
+
                             cel = null;
+
+                            try {
+                                skrzynia.getSprzeglo().zwolnij();
+                            } catch (IllegalStateException ignored) {}
+
+                            while (skrzynia.getAktBieg() > 0) {
+                                try {
+                                    skrzynia.zmniejszBieg();
+                                } catch (IllegalStateException ignored) {}
+                            }
+
+                            try {
+                                silnik.zatrzymaj();
+                            } catch (IllegalStateException ignored) {}
+
+                            resetujStan();
+                            notifyListeners();
                         }
                     }
                 }
@@ -63,6 +81,7 @@ public class Samochod extends Thread {
             }
         }
     }
+
 
     public void wlacz() {
         if (silnik.getObroty() > 0) {
@@ -96,13 +115,21 @@ public class Samochod extends Thread {
     }
 
     private void resetujStan() {
-        while (skrzynia.getAktBieg() > 0) {
-            try {
-                skrzynia.zmniejszBieg();
-            } catch (IllegalStateException ignored) {}
-        }
-        skrzynia.getSprzeglo().zwolnij();
+
+        synchronized (this) {
+
+            try { skrzynia.getSprzeglo().wcisnij(); } catch (IllegalStateException ignored) {}
+
+            while (skrzynia.getAktBieg() > 0) {
+                try { skrzynia.zmniejszBieg(); } catch (IllegalStateException ignored) {}
+            }
+
+            try { skrzynia.getSprzeglo().zwolnij(); } catch (IllegalStateException ignored) {}
+
+            try { silnik.zatrzymaj(); } catch (IllegalStateException ignored) {}}
+
         cel = null;
+        Platform.runLater(this::notifyListeners);
     }
 
     // --- Gettery ---
@@ -113,16 +140,14 @@ public class Samochod extends Thread {
     public double getAktPredkosc()
     {
         if (skrzynia.getAktBieg() == 0) return 0;
-        return silnik.getObroty() * skrzynia.getAktBieg() * 0.1;
+        double predkosc = silnik.getObroty() * skrzynia.getAktBieg() * 0.1;
+        return Math.min(predkosc, maxPredkosc);
     }
 
-    public boolean isStanWlaczenia() {return stanWlaczenia;}
 
     public String getNrRejest() {return nrRejest;}
 
     public String getModel() {return model;}
-
-    public double getMaxPredkosc() {return maxPredkosc;}
 
     public Silnik getSilnik() {return silnik;}
 
@@ -135,5 +160,9 @@ public class Samochod extends Thread {
     private List<Listener> listeners = new ArrayList<>();
     public void addListener(Listener listener) {listeners.add(listener);}
     public void removeListener(Listener listener) {listeners.remove(listener);}
-    private void notifyListeners() { for (Listener l : listeners) {l.update();} }
+    private void notifyListeners() { Platform.runLater(() -> {
+        for (Listener l : listeners) {
+            l.update();
+        }
+    }); }
 }

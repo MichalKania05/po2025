@@ -36,6 +36,5 @@ public class SkrzyniaBiegow extends Komponent {
     }
 
     public int getAktBieg() { return aktBieg; }
-    public int getIloscBiegow() { return iloscBiegow; }
     public Sprzeglo getSprzeglo() { return sprzeglo; }
 }

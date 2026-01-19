@@ -45,7 +45,6 @@ public class HelloController implements Listener {
     private ObservableList<Samochod> samochody = FXCollections.observableArrayList();
     private Map<Samochod, ImageView> samochodIcons = new HashMap<>();
 
-    // jedno źródło obrazu dla wszystkich ikon
     private Image carImage;
 
     @FXML
@@ -58,19 +57,11 @@ public class HelloController implements Listener {
             mapPane.getChildren().remove(icon);
         }
 
-        // usunięcie listenera
         aktSam.removeListener(this);
-
-        // (opcjonalnie) zatrzymanie wątku
         aktSam.stopSamochod();
-
-        // usunięcie z listy
         samochody.remove(aktSam);
-
-        // powrót do defaultowego
         aktSam = defaultSam;
         carComboBox.getSelectionModel().select(defaultSam);
-
         updateRemoveButtonState();
         refresh();
     }
@@ -78,12 +69,11 @@ public class HelloController implements Listener {
     @FXML
     public void initialize() {
 
-        // ===== Załaduj obraz RAZ =====
         carImage = new Image(getClass().getResourceAsStream("/samochod.png"));
 
         Sprzeglo spr = new Sprzeglo("SPR", "SPR", "Sprzęgło", 0.005, 250);
-        SkrzyniaBiegow sb = new SkrzyniaBiegow("SB", "SB", "Skrzynia", 25, 5000, 6, spr);
-        Silnik sil = new Silnik("SIL", "SIL", "Silnik", 10000, 50000, 4000);
+        SkrzyniaBiegow sb = new SkrzyniaBiegow("SB", "SB", "Skrzynia", 4700, 10000, 6, spr);
+        Silnik sil = new Silnik("SIL", "SIL", "Silnik", 73000, 50000, 4000);
 
         // Defaultowy samochód
         Samochod sam = new Samochod("SAM-001", "Default", 250, sil, sb);
@@ -94,7 +84,7 @@ public class HelloController implements Listener {
 
         dodajIkoneSamochodu(sam);
 
-        // ===== ComboBox =====
+        // Lista samochodów
         carComboBox.setItems(samochody);
         carComboBox.getSelectionModel().selectFirst();
         carComboBox.setOnAction(e -> {
@@ -103,14 +93,14 @@ public class HelloController implements Listener {
             updateRemoveButtonState();
         });
 
-        // ===== Kliknięcie na mapę =====
+        // Wybór celu kliknięciem
         mapPane.setOnMouseClicked(event -> {
             if (aktSam != null) {
                 aktSam.jedzDo(new Pozycja(event.getX(), event.getY()));
             }
         });
 
-        // ===== Przycisk dodawania =====
+        // Dodawanie samochodów
         addNewBtn.setOnAction(e -> {
             try {
                 openAddCarWindow();
@@ -123,8 +113,7 @@ public class HelloController implements Listener {
         refresh();
     }
 
-    // ================= IKONY =================
-
+    // Ikona samochodu
     private void dodajIkoneSamochodu(Samochod sam) {
         ImageView iv = new ImageView(carImage);
         iv.setFitWidth(60);
@@ -140,8 +129,7 @@ public class HelloController implements Listener {
         sam.addListener(this);
     }
 
-
-    // ================= REFRESH =================
+    // Refresh parametrów
     private void refresh() {
         if (aktSam == null) return;
 

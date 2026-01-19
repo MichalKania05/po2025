@@ -21,14 +21,7 @@ abstract class Komponent
         this.cena = cena;
     }
 
-
     // Gettery (metody)
-    public String getProducent()
-    {return producent;}
-
-    public String getModel()
-    {return model;}
-
     public String getNazwa()
     {return nazwa;}
 
