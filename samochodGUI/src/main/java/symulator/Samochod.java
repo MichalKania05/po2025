@@ -78,6 +78,8 @@ public class Samochod extends Thread {
         }
         silnik.zatrzymaj();
         stanWlaczenia = false;
+        resetujStan();
+        notifyListeners();
     }
 
     public void jedzDo(Pozycja nowyCel)
@@ -91,6 +93,16 @@ public class Samochod extends Thread {
     public void stopSamochod() {
         running = false;
         interrupt();
+    }
+
+    private void resetujStan() {
+        while (skrzynia.getAktBieg() > 0) {
+            try {
+                skrzynia.zmniejszBieg();
+            } catch (IllegalStateException ignored) {}
+        }
+        skrzynia.getSprzeglo().zwolnij();
+        cel = null;
     }
 
     // --- Gettery ---

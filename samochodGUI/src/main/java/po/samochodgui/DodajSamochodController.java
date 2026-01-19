@@ -45,7 +45,7 @@ public class DodajSamochodController {
             weight = Double.parseDouble(weightTextField.getText());
             speed = Double.parseDouble(speedTextField.getText());
         } catch (NumberFormatException e) {
-            System.out.println("Niepoprawne dane. Spróbuj ponownie.");
+            pokazBlad("Niepoprawne dane. Spróbuj ponownie.");
             return;
         }
 
@@ -58,7 +58,6 @@ public class DodajSamochodController {
             mainController.dodajSamochod(nowySam);
         }
 
-        // Zamykamy okno dialogowe
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.close();
     }
@@ -68,4 +67,13 @@ public class DodajSamochodController {
         Stage stage = (Stage) cancelButton.getScene().getWindow();
         stage.close();
     }
+
+    private void pokazBlad(String msg) {
+        javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.ERROR);
+        alert.setTitle("Błąd");
+        alert.setHeaderText(null);
+        alert.setContentText(msg);
+        alert.showAndWait();
+    }
+
 }

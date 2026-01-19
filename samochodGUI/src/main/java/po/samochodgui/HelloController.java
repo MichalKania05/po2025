@@ -271,11 +271,19 @@ public class HelloController implements Listener {
     }
 
     public void dodajSamochod(Samochod nowySam) {
+        for (Samochod s : samochody) {
+            if (s.getNrRejest().equalsIgnoreCase(nowySam.getNrRejest())) {
+                pokazBlad("Samochód z podaną rejestracją już istnieje!");
+                return;
+            }
+        }
+
         samochody.add(nowySam);
         carComboBox.getSelectionModel().select(nowySam);
         aktSam = nowySam;
         dodajIkoneSamochodu(nowySam);
     }
+
 
     private void pokazBlad(String msg) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
