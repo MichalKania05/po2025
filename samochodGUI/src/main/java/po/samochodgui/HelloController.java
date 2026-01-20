@@ -27,7 +27,7 @@ public class HelloController implements Listener {
 
     @FXML private ComboBox<Samochod> carComboBox;
 
-    @FXML private TextField modelField, regField, weightField, speedField;
+    @FXML private TextField modelField, regField, priceField, weightField, speedField;
     @FXML private Button onBtn, offBtn;
 
     @FXML private TextField gbNameField, gbPriceField, gbWeightField, gbGearField;
@@ -72,8 +72,8 @@ public class HelloController implements Listener {
         carImage = new Image(getClass().getResourceAsStream("/samochod.png"));
 
         Sprzeglo spr = new Sprzeglo("SPR", "SPR", "Sprzęgło", 0.005, 250);
-        SkrzyniaBiegow sb = new SkrzyniaBiegow("SB", "SB", "Skrzynia", 4700, 10000, 6, spr);
-        Silnik sil = new Silnik("SIL", "SIL", "Silnik", 73000, 50000, 4000);
+        SkrzyniaBiegow sb = new SkrzyniaBiegow("SB", "SB", "Skrzynia", 4300, 10000, 6, spr);
+        Silnik sil = new Silnik("SIL", "SIL", "Silnik", 73000, 50000, 4700);
 
         // Defaultowy samochód
         Samochod sam = new Samochod("SAM-001", "Default", 250, sil, sb);
@@ -135,6 +135,7 @@ public class HelloController implements Listener {
 
         modelField.setText(aktSam.getModel());
         regField.setText(aktSam.getNrRejest());
+        priceField.setText(String.format("%.2f", aktSam.getCena()));
         weightField.setText(String.format("%.2f", aktSam.getWaga()));
         speedField.setText(String.format("%.2f", aktSam.getAktPredkosc()));
 
@@ -258,11 +259,11 @@ public class HelloController implements Listener {
         c.setMainController(this);
     }
 
-    public void dodajSamochod(Samochod nowySam) {
+    public boolean dodajSamochod(Samochod nowySam) {
         for (Samochod s : samochody) {
             if (s.getNrRejest().equalsIgnoreCase(nowySam.getNrRejest())) {
                 pokazBlad("Samochód z podaną rejestracją już istnieje!");
-                return;
+                return false; // Nie dodano samochodu
             }
         }
 
@@ -270,6 +271,7 @@ public class HelloController implements Listener {
         carComboBox.getSelectionModel().select(nowySam);
         aktSam = nowySam;
         dodajIkoneSamochodu(nowySam);
+        return true; // Dodano samochód
     }
 
 
