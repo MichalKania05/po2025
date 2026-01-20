@@ -53,22 +53,6 @@ public class Samochod extends Thread {
                         if (pozycja.get_x() == cel.get_x() && pozycja.get_y() == cel.get_y()) {
 
                             cel = null;
-
-                            try {
-                                skrzynia.getSprzeglo().zwolnij();
-                            } catch (IllegalStateException ignored) {}
-
-                            while (skrzynia.getAktBieg() > 0) {
-                                try {
-                                    skrzynia.zmniejszBieg();
-                                } catch (IllegalStateException ignored) {}
-                            }
-
-                            try {
-                                silnik.zatrzymaj();
-                            } catch (IllegalStateException ignored) {}
-
-                            resetujStan();
                             notifyListeners();
                         }
                     }
@@ -97,7 +81,6 @@ public class Samochod extends Thread {
         }
         silnik.zatrzymaj();
         stanWlaczenia = false;
-        resetujStan();
         notifyListeners();
     }
 
@@ -114,24 +97,6 @@ public class Samochod extends Thread {
         interrupt();
     }
 
-    private void resetujStan() {
-
-        synchronized (this) {
-
-            try { skrzynia.getSprzeglo().wcisnij(); } catch (IllegalStateException ignored) {}
-
-            while (skrzynia.getAktBieg() > 0) {
-                try { skrzynia.zmniejszBieg(); } catch (IllegalStateException ignored) {}
-            }
-
-            try { skrzynia.getSprzeglo().zwolnij(); } catch (IllegalStateException ignored) {}
-
-            try { silnik.zatrzymaj(); } catch (IllegalStateException ignored) {}}
-
-        cel = null;
-        Platform.runLater(this::notifyListeners);
-    }
-
     // --- Gettery ---
     public Pozycja getPozycja() {return pozycja;}
 
@@ -143,11 +108,10 @@ public class Samochod extends Thread {
 
     public double getAktPredkosc()
     {
-        if (skrzynia.getAktBieg() == 0) return 0;
+        if ((skrzynia.getAktBieg() == 0) || cel == null) return 0;
         double predkosc = silnik.getObroty() * skrzynia.getAktBieg() * 0.1;
         return Math.min(predkosc, maxPredkosc);
     }
-
 
     public String getNrRejest() {return nrRejest;}
 

@@ -10,32 +10,19 @@ public class Pozycja
     private double y;
 
     // Konstruktor
-    public Pozycja(double x, double y)
-    {
+    public Pozycja(double x, double y) {
         this.x = x;
         this.y = y;
     }
 
-    // Metody
-    public void aktPozycje(double deltaX, double deltaY)
-    {
-        this.x += deltaX;
-        this.y += deltaY;
-    }
-
-    public String getPozycja()
-    {
-        return "Pozycja: (" + x + " , " + y + ")";
-    }
-
+    // Metoda do krokowego przemieszczania
     public synchronized void przemiesc(Pozycja cel, double predkosc, double deltaT)
     {
         double dx = cel.get_x() - x;
         double dy = cel.get_y() - y;
         double dystans = Math.sqrt(dx*dx + dy*dy);
 
-        if(dystans < 1e-3)
-        {
+        if(dystans < 1e-3) {    // Bardzo blisko celu
             x = cel.get_x();
             y = cel.get_y();
             return;

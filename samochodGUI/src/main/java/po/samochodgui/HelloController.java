@@ -26,65 +26,55 @@ public class HelloController implements Listener {
     private Samochod defaultSam;
 
     @FXML private ComboBox<Samochod> carComboBox;
-
     @FXML private TextField modelField, regField, priceField, weightField, speedField;
-    @FXML private Button onBtn, offBtn;
-
     @FXML private TextField gbNameField, gbPriceField, gbWeightField, gbGearField;
-    @FXML private Button GearUpBtn, GearDownBtn;
-
     @FXML private TextField engNameField, engPriceField, engWeightField, engRPMField;
-    @FXML private Button gasBtn, noGasBtn;
-
     @FXML private TextField clNameField, clPriceField, clWeightField, clStateField;
-    @FXML private Button pressBtn, releaseBtn;
-
     @FXML private Button addNewBtn, removeBtn;
     @FXML private AnchorPane mapPane;
 
+    // Dane
     private ObservableList<Samochod> samochody = FXCollections.observableArrayList();
     private Map<Samochod, ImageView> samochodIcons = new HashMap<>();
-
     private Image carImage;
 
+    // Usuwanie samochodów
     @FXML
     private void onRemoveCar() {
         if (aktSam == null || aktSam == defaultSam) return;
 
         // usunięcie ikony z mapy
         ImageView icon = samochodIcons.remove(aktSam);
-        if (icon != null) {
-            mapPane.getChildren().remove(icon);
-        }
+        if (icon != null) {mapPane.getChildren().remove(icon);}
 
         aktSam.removeListener(this);
         aktSam.stopSamochod();
         samochody.remove(aktSam);
-        aktSam = defaultSam;
+        aktSam = defaultSam; // Automatyczny wybór defaultowego
         carComboBox.getSelectionModel().select(defaultSam);
         updateRemoveButtonState();
         refresh();
     }
 
+    // Inicjalizacja
     @FXML
     public void initialize() {
 
+        // Ikona samochodu
         carImage = new Image(getClass().getResourceAsStream("/samochod.png"));
 
+        // Defaultowy samochód
         Sprzeglo spr = new Sprzeglo("SPR", "SPR", "Sprzęgło", 0.005, 250);
         SkrzyniaBiegow sb = new SkrzyniaBiegow("SB", "SB", "Skrzynia", 4300, 10000, 6, spr);
         Silnik sil = new Silnik("SIL", "SIL", "Silnik", 73000, 50000, 4700);
-
-        // Defaultowy samochód
         Samochod sam = new Samochod("SAM-001", "Default", 250, sil, sb);
 
         defaultSam = sam;
         samochody.add(sam);
         aktSam = sam;
-
         dodajIkoneSamochodu(sam);
 
-        // Lista samochodów
+        // ComboBox z samochodami
         carComboBox.setItems(samochody);
         carComboBox.getSelectionModel().selectFirst();
         carComboBox.setOnAction(e -> {
@@ -119,13 +109,10 @@ public class HelloController implements Listener {
         iv.setFitWidth(60);
         iv.setFitHeight(40);
         iv.setPreserveRatio(true);
-
         iv.setTranslateX(sam.getPozycja().get_x());
         iv.setTranslateY(sam.getPozycja().get_y());
-
         mapPane.getChildren().add(iv);
         samochodIcons.put(sam, iv);
-
         sam.addListener(this);
     }
 
@@ -164,8 +151,7 @@ public class HelloController implements Listener {
         }
     }
 
-    // ================= AKCJE =================
-
+    // Uruchomienie samochodu
     @FXML
     private void onOnButton() {
         if (aktSam == null) return;
@@ -177,6 +163,7 @@ public class HelloController implements Listener {
         }
     }
 
+    // Wyłączenie samochodu
     @FXML
     private void onOffButton() {
         if (aktSam == null) return;
@@ -188,7 +175,9 @@ public class HelloController implements Listener {
         }
     }
 
+    // Zwiększenie biegu
     @FXML private void onGearUpBtn() {
+        if (aktSam == null) return;
         try {
             aktSam.getSkrzynia().zwiekszBieg();
             refresh();
@@ -197,7 +186,9 @@ public class HelloController implements Listener {
         }
     }
 
+    // Zmniejszenie biegu
     @FXML private void onGearDownBtn() {
+        if (aktSam == null) return;
         try {
             aktSam.getSkrzynia().zmniejszBieg();
             refresh();
@@ -206,26 +197,42 @@ public class HelloController implements Listener {
         }
     }
 
-    @FXML private void onPressClutch() {
+    // Wciśnięcie sprzęgła
+    @FXML
+    private void onPressClutch() {
+        if (aktSam == null) return;
         try {
-            aktSam.getSkrzynia().getSprzeglo().wcisnij();
-            refresh();
-        } catch (IllegalStateException e) {
+            if (!aktSam.getSkrzynia().getSprzeglo().stanSprzegla()) {
+                aktSam.getSkrzynia().getSprzeglo().wcisnij();
+                clStateField.setText("Wciśnięte");
+            } else {
+                pokazBlad("Sprzęgło jest już wciśnięte");
+            }
+        } catch (Exception e) {
             pokazBlad(e.getMessage());
         }
     }
 
-    @FXML private void onReleaseClutch() {
+    // Zwolnienie sprzęgła
+    @FXML
+    private void onReleaseClutch() {
+        if (aktSam == null) return;
         try {
-            aktSam.getSkrzynia().getSprzeglo().zwolnij();
-            refresh();
-        } catch (IllegalStateException e) {
+            if (aktSam.getSkrzynia().getSprzeglo().stanSprzegla()) {
+                aktSam.getSkrzynia().getSprzeglo().zwolnij();
+                clStateField.setText("Zwolnione");
+            } else {
+                pokazBlad("Sprzęgło jest już zwolnione");
+            }
+        } catch (Exception e) {
             pokazBlad(e.getMessage());
         }
     }
 
+    // Zwiększenie obrotów
     @FXML
     private void gasUp() {
+        if (aktSam == null) return;
         try {
             aktSam.getSilnik().zwiekszObroty();
             refresh();
@@ -234,27 +241,25 @@ public class HelloController implements Listener {
         }
     }
 
+    // Zmniejszenie obrotów
     @FXML
     private void gasDown() {
         if (aktSam == null) return;
         try {
             aktSam.getSilnik().zmniejszObroty();
-            refresh();
         } catch (IllegalStateException e) {
             pokazBlad(e.getMessage());
         }
+        refresh();
     }
 
-
-    // ================= OKNO DODAWANIA =================
-
+    // Okno dodawania samochodów
     public void openAddCarWindow() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("DodajSamochod.fxml"));
         Stage stage = new Stage();
         stage.setScene(new Scene(loader.load()));
         stage.setTitle("Dodaj samochód");
         stage.show();
-
         DodajSamochodController c = loader.getController();
         c.setMainController(this);
     }
@@ -273,7 +278,6 @@ public class HelloController implements Listener {
         dodajIkoneSamochodu(nowySam);
         return true; // Dodano samochód
     }
-
 
     private void pokazBlad(String msg) {
         Alert alert = new Alert(Alert.AlertType.ERROR);

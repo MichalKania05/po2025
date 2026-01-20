@@ -10,8 +10,8 @@ import symulator.Samochod;
 import symulator.Silnik;
 import symulator.SkrzyniaBiegow;
 import symulator.Sprzeglo;
-
 import javafx.event.ActionEvent;
+
 
 public class DodajSamochodController {
 
@@ -23,8 +23,9 @@ public class DodajSamochodController {
     @FXML private javafx.scene.control.ComboBox<SkrzyniaBiegow> gearboxComboBox;
     @FXML private Button cancelButton;
 
-    private ObservableList<Samochod> samochody;
+    private ObservableList<Samochod> samochody; // Lista samochodów
 
+    // Elementy do wyboru
     private Silnik sil;
     private Silnik sil_1;
     private Silnik sil_2;
@@ -32,6 +33,7 @@ public class DodajSamochodController {
     private SkrzyniaBiegow sb_1;
     private SkrzyniaBiegow sb_2;
 
+    // Settery
     private HelloController mainController;
     public void setMainController(HelloController controller) {
         this.mainController = controller;
@@ -40,13 +42,16 @@ public class DodajSamochodController {
         this.samochody = samochody;
     }
 
+    // Przycisk potwierdzający utworzenie samochodu
     @FXML
     private void onConfirmButton(ActionEvent event) {
+        // Pobrane dane
         String model = modelTextField.getText();
         String registration = registrationTextField.getText();
         double speed;
         double rpm;
 
+        // Walidacja szybkości
         try {
             speed = Double.parseDouble(speedTextField.getText());
         } catch (NumberFormatException e) {
@@ -54,6 +59,7 @@ public class DodajSamochodController {
             return;
         }
 
+        // Walidacja obrotów
         try {
             rpm = Double.parseDouble(rpmTextField.getText());
         } catch (NumberFormatException e) {
@@ -61,6 +67,7 @@ public class DodajSamochodController {
             return;
         }
 
+        // Wybrane elementy z ComboBoxów
         Silnik wybranySilnik = engineComboBox.getValue();
         SkrzyniaBiegow wybranaSkrzynia = gearboxComboBox.getValue();
 
@@ -70,8 +77,10 @@ public class DodajSamochodController {
         }
 
         int rpmUser = (int) rpm; // Własne nadpisane RPM
+        wybranySilnik.setLimitObrotow(rpmUser); // Własny limit
         int rpmLimit = wybranySilnik.getMaxObroty(); // Maksymalne RPM, których nie można przekroczyć
 
+        // Czy własne RPM nie przekraczają maksymalnych
         if (rpmUser > rpmLimit) {
             pokazBlad(
                     "Maksymalne obroty nie mogą przekraczać "
@@ -89,7 +98,9 @@ public class DodajSamochodController {
                 rpmLimit
         );
 
-        Sprzeglo spr = new Sprzeglo("P", "Sprzeglo", "Sprzeglo", 0.01, 100); // Pozostanie takie samo
+        // Sprzęgło jedno dla każdej skrzyni biegów
+        Sprzeglo spr = new Sprzeglo("P", "Sprzeglo",
+                "Sprzeglo", 0.01, 100);
 
         SkrzyniaBiegow sb = new SkrzyniaBiegow(
                 "COPY",
@@ -101,7 +112,7 @@ public class DodajSamochodController {
                 spr
         );
 
-        Samochod nowySam = new Samochod(registration, model, speed, sil, sb);
+        Samochod nowySam = new Samochod(registration, model, speed, wybranySilnik, wybranaSkrzynia);
 
         boolean dodano = false;
         if (mainController != null) {
@@ -114,12 +125,14 @@ public class DodajSamochodController {
         }
     }
 
+    // Anulowanie
     @FXML
     private void onCancelButton(ActionEvent event) {
         Stage stage = (Stage) cancelButton.getScene().getWindow();
         stage.close();
     }
 
+    // Obsługa pop-upów
     private void pokazBlad(String msg) {
         javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.ERROR);
         alert.setTitle("Błąd");
@@ -128,9 +141,11 @@ public class DodajSamochodController {
         alert.showAndWait();
     }
 
+    // Inicjalizacja
     @FXML
     public void initialize()
     {
+        // Własne silniki do wyboru w ComboBoxie
         sil = new Silnik(
                 "SIL", "SIL", "Silnik",
                 73000, 50000, 4700); // Własne maxObroty można nadpisać
@@ -146,8 +161,10 @@ public class DodajSamochodController {
         engineComboBox.getItems().addAll(sil, sil_1, sil_2);
         engineComboBox.getSelectionModel().selectFirst();
 
+        // Sprzęgło jedno dla każdej skrzyni biegów
         Sprzeglo spr = new Sprzeglo("P", "Sprzeglo", "Sprzeglo", 0.01, 100); // Pozostanie takie samo
 
+        // Własne skrzynie do wyboru w ComboBoxie
         sb = new SkrzyniaBiegow(
                 "SB", "SB", "Skrzynia",
                 4300, 10000, 6, spr
@@ -163,10 +180,7 @@ public class DodajSamochodController {
                 9200, 9000, 5, spr
         );
 
-
         gearboxComboBox.getItems().addAll(sb, sb_1, sb_2);
         gearboxComboBox.getSelectionModel().selectFirst();
     }
-
-
 }

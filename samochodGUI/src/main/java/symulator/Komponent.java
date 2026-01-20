@@ -9,11 +9,9 @@ abstract class Komponent
     private double waga;
     private double cena;
 
-
     // Konstruktor
     public Komponent(String producent, String model, String nazwa,
-                     double waga, double cena)
-    {
+                     double waga, double cena) {
         this.producent = producent;
         this.model = model;
         this.nazwa = nazwa;
@@ -21,13 +19,10 @@ abstract class Komponent
         this.cena = cena;
     }
 
-    // Gettery (metody)
-    public String getNazwa()
-    {return nazwa;}
+    // Gettery
+    public String getNazwa() {return nazwa;}
 
-    public double getWaga()
-    {return waga;}
+    public double getWaga() {return waga;}
 
-    public double getCena()
-    {return cena;}
+    public double getCena() {return cena;}
 }
