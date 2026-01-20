@@ -135,7 +135,11 @@ public class Samochod extends Thread {
     // --- Gettery ---
     public Pozycja getPozycja() {return pozycja;}
 
-    public double getWaga() {return silnik.getWaga() + skrzynia.getWaga();}
+    public double getWaga()
+    {return silnik.getWaga() + skrzynia.getWaga() + skrzynia.getSprzeglo().getWaga();}
+
+    public double getCena()
+    {return silnik.getCena() + skrzynia.getCena() + skrzynia.getSprzeglo().getCena();}
 
     public double getAktPredkosc()
     {

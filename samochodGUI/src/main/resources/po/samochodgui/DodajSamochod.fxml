@@ -25,6 +25,12 @@
     <Label text="Maksymalne obroty"/>
     <TextField fx:id="rpmTextField"/>
 
+    <Label text="Silnik"/>
+    <ComboBox fx:id="engineComboBox" prefWidth="200"/>
+
+    <Label text="Skrzynia biegów"/>
+    <ComboBox fx:id="gearboxComboBox" prefWidth="200"/>
+
     <HBox spacing="10">
         <Button fx:id="confirmButton" text="Zatwierdź" onAction="#onConfirmButton"/>
         <Button fx:id="cancelButton" text="Anuluj" onAction="#onCancelButton"/>

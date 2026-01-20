@@ -32,10 +32,22 @@ public class Silnik extends Komponent {
         }
 
         if (obroty + 500 > maxObroty) {
-            throw new IllegalStateException("Przekroczono maksymalne obroty (" + maxObroty + ")");
+            obroty = maxObroty; // ustaw na maksymalne obroty
+            pokazAlert("Osiągnięto maksymalne obroty (" + maxObroty + ") !");
+        } else {
+            obroty += 500;
         }
+    }
 
-        obroty += 500;
+    // Popup gdy przekroczymy maxObroty
+    private void pokazAlert(String msg) {
+        javafx.application.Platform.runLater(() -> {
+            javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.INFORMATION);
+            alert.setTitle("Informacja");
+            alert.setHeaderText(null);
+            alert.setContentText(msg);
+            alert.showAndWait();
+        });
     }
 
     public void zmniejszObroty() {
@@ -51,4 +63,13 @@ public class Silnik extends Komponent {
     }
 
     public int getObroty() { return obroty; }
+    public int getMaxObroty() {return maxObroty;}
+
+    @Override
+    public String toString() {
+        return getNazwa() + " | "
+                + maxObroty + " rpm" + " | "
+                + getWaga() + " kg" + " | "
+                + getCena() + " zł";
+    }
 }

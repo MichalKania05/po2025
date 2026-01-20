@@ -37,4 +37,14 @@ public class SkrzyniaBiegow extends Komponent {
 
     public int getAktBieg() { return aktBieg; }
     public Sprzeglo getSprzeglo() { return sprzeglo; }
+    public int getIloscBiegow() { return iloscBiegow; }
+
+    @Override
+    public String toString() {
+        return getNazwa() + " | "
+                + iloscBiegow + " biegów"
+                + " | " + getWaga() + " kg"
+                + " | " + getCena() + " zł";
+    }
+
 }

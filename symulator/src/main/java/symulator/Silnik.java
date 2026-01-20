@@ -58,15 +58,13 @@ public class Silnik extends Komponent
         }
     }
 
-
-    // Gettery
-    public int getMaxObroty()
-    {
-        return maxObroty;
-    }
-
     public int getObroty()
     {
         return obroty;
+    }
+
+    @Override
+    public String toString() {
+        return getNazwa() + " | " + maxObroty + " rpm | " + getCena() + " zł";
     }
 }

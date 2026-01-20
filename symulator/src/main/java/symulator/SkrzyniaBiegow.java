@@ -73,18 +73,9 @@ public class SkrzyniaBiegow extends Komponent
         return aktPrzelozenie;
     }
 
-    public int getIloscBiegow()
-    {
-        return iloscBiegow;
+    @Override
+    public String toString() {
+        return getNazwa() + " | " + iloscBiegow + " biegów | " + getCena() + " zł";
     }
 
-    public Sprzeglo getSprzeglo()
-    {
-        return sprzeglo;
-    }
-
-    public void setSprzeglo(Sprzeglo sprzeglo)
-    {
-        this.sprzeglo = sprzeglo;
-    }
 }
